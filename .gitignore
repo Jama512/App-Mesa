@@ -5,3 +5,5 @@ __pycache__/
 .expo/
 .DS_Store
 Thumbs.db
+backend/serviceAccountKey.json
+backend/serviceAccountKey.json

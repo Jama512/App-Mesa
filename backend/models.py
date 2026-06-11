@@ -1,4 +1,6 @@
+from typing import Any
 from sqlalchemy import Column, String, Float, JSON
+from sqlalchemy.ext.mutable import MutableList, MutableDict
 from database import Base
 
 class RestaurantDB(Base):
@@ -16,12 +18,11 @@ class RestaurantDB(Base):
     status = Column(String, default="Abierto ahora")
     ownerId = Column(String, index=True)
     
-    features = Column(JSON, default=dict)
-    images = Column(JSON, default=list)
-    events = Column(JSON, default=list)
-    menu = Column(JSON, default=list)
+    features: Any = Column(MutableDict.as_mutable(JSON), default=dict)
+    images:   Any = Column(MutableList.as_mutable(JSON), default=list)
+    events:   Any = Column(MutableList.as_mutable(JSON), default=list)
+    menu:     Any = Column(MutableList.as_mutable(JSON), default=list)
     
-    # 🔥 NUEVOS CAMPOS: Para guardar los links del logo y portada
     logo = Column(String, nullable=True)
     coverImage = Column(String, nullable=True)
 

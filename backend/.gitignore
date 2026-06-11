@@ -1,0 +1,13 @@
+serviceAccountKey.json
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+venv/
+env/
+static/*.jpeg
+static/*.jpg
+static/*.png
+*.db
+*.log
