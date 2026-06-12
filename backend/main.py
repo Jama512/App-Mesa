@@ -36,9 +36,9 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Configuración Cloudinary
 cloudinary.config(
-    cloud_name=os.getenv("dashoelay"),
-    api_key=os.getenv("624348884241165"),
-    api_secret=os.getenv("IVJELwE5-nnDS1CWgKK6GegJf_A"),
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
 )
 
 
