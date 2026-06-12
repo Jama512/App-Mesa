@@ -303,3 +303,11 @@ async def upload_image(file: UploadFile = File(...)):
         return {"mensaje": "Imagen subida exitosamente", "url": result["secure_url"]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al subir imagen: {str(e)}")
+    
+@app.get("/debug/cloudinary")
+def debug_cloudinary():
+    return {
+        "cloud_name": os.getenv("CLOUDINARY_CLOUD_NAME"),
+        "api_key_set": bool(os.getenv("CLOUDINARY_API_KEY")),
+        "api_secret_set": bool(os.getenv("CLOUDINARY_API_SECRET")),
+    }
