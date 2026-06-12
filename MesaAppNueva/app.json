@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "MesaAppNueva",
+    "slug": "mesa-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/adaptive-icon.png",
+    "userInterfaceStyle": "light",
+    "plugins": [
+      "expo-sqlite"
+    ],
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#E6F4FE"
+      },
+      "permissions": [
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION"
+      ],
+      "package": "com.jama512.mesaapp",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBBrhTJsQVc8j4UmlqQ6j5V7hGc5N1PA-Y"
+        }
+      }
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Esta app necesita acceso a tu ubicación para mostrar restaurantes cercanos en el mapa.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Esta app necesita acceso a tu ubicación para mostrar restaurantes cercanos en el mapa."
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c3dcd534-5fbe-4c39-9e2c-d22dd420f4ac"
+      }
+    }
+  }
+}
