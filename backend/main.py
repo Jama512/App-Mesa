@@ -1,13 +1,15 @@
 import os
 import shutil
 import uuid
+import cloudinary
+import cloudinary.uploader
 
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File
 from fastapi import Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
-from sqlalchemy.orm.attributes import flag_modified  # ← soluciona el rojo
+from sqlalchemy.orm.attributes import flag_modified
 
 from database import engine, get_db
 from models import Base, RestaurantDB, UserDB
@@ -33,7 +35,12 @@ app.add_middleware(
 os.makedirs("static", exist_ok=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-IMAGE_BASE_URL = os.getenv("IMAGE_BASE_URL", "").rstrip("/")
+# Configuración Cloudinary
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
+)
 
 
 # ==========================================
@@ -169,7 +176,7 @@ def add_dish_me(
     menu = list(db_r.menu) if isinstance(db_r.menu, list) else []
     menu.append(dish.dict())
     db_r.menu = menu
-    flag_modified(db_r, "menu")  # ← le dice a SQLAlchemy que cambió
+    flag_modified(db_r, "menu")
     db.commit()
     return {"mensaje": "Platillo agregado", "menu": db_r.menu}
 
@@ -283,22 +290,17 @@ def remove_event_me(
 
 
 # ==========================================
-# 6. IMÁGENES
+# 6. IMÁGENES — Cloudinary
 # ==========================================
 
 @app.post("/upload/image/")
-async def upload_image(request: Request, file: UploadFile = File(...)):
+async def upload_image(file: UploadFile = File(...)):
     try:
-        unique_filename = f"{uuid.uuid4()}_{file.filename}"
-        file_location = f"static/{unique_filename}"
-
-        with open(file_location, "wb+") as file_object:
-            shutil.copyfileobj(file.file, file_object)
-
-        base_url = IMAGE_BASE_URL or str(request.base_url).rstrip("/")
-        image_url = f"{base_url}/static/{unique_filename}"
-
-        return {"mensaje": "Imagen subida exitosamente", "url": image_url}
-
+        result = cloudinary.uploader.upload(
+            file.file,
+            folder="mesa_app",
+            resource_type="image",
+        )
+        return {"mensaje": "Imagen subida exitosamente", "url": result["secure_url"]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al subir imagen: {str(e)}")

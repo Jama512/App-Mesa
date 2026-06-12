@@ -11,3 +11,4 @@ static/*.jpg
 static/*.png
 *.db
 *.log
+backend/serviceAccountKey.json
